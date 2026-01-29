@@ -191,7 +191,7 @@ bool CheckFormatStandard( SessionRef session, XMP_FileFormat format, const Strin
  * @param progCBInfoPtr		Points to the progress callback information
  * @return					true on success
  */
-bool GetXMPStandard( SessionRef session, XMP_FileFormat format, const StringPtr path, std::string& xmpStr, bool* containsXMP, XMP_OptionBits flags = NULL, std::string *packet = NULL, XMP_PacketInfo *packetInfo = NULL, ErrorCallbackInfo * errorCallback = NULL, XMP_ProgressTracker::CallbackInfo * progCBInfoPtr = NULL );
+bool GetXMPStandard( SessionRef session, XMP_FileFormat format, const StringPtr path, std::string& xmpStr, bool* containsXMP, XMP_OptionBits flags = 0, std::string *packet = NULL, XMP_PacketInfo *packetInfo = NULL, ErrorCallbackInfo * errorCallback = NULL, XMP_ProgressTracker::CallbackInfo * progCBInfoPtr = NULL );
 
 /** @brief Put XMP into standard file handler
  *
@@ -206,7 +206,7 @@ bool GetXMPStandard( SessionRef session, XMP_FileFormat format, const StringPtr 
  * @param progCBInfoPtr		Points to the progress callback information
  * @return					true on success
  */
-bool PutXMPStandard( SessionRef session, XMP_FileFormat format, const StringPtr path, const XMP_StringPtr xmpStr, XMP_OptionBits flags = NULL, ErrorCallbackInfo * errorCallback = NULL, XMP_ProgressTracker::CallbackInfo * progCBInfoPtr = NULL );
+bool PutXMPStandard( SessionRef session, XMP_FileFormat format, const StringPtr path, const XMP_StringPtr xmpStr, XMP_OptionBits flags = 0, ErrorCallbackInfo * errorCallback = NULL, XMP_ProgressTracker::CallbackInfo * progCBInfoPtr = NULL );
 
 /** @brief Getting file modification date from standard file handler
  *
@@ -220,7 +220,7 @@ bool PutXMPStandard( SessionRef session, XMP_FileFormat format, const StringPtr 
  * @param flags			OpenFlags passed during opening a file
  * @return				true on success
  */
-bool GetFileModDateStandardHandler( SessionRef session, XMP_FileFormat format, StringPtr path, XMP_DateTime * modDate, XMP_Bool * isSuccess, XMP_OptionBits flags = NULL );
+bool GetFileModDateStandardHandler( SessionRef session, XMP_FileFormat format, StringPtr path, XMP_DateTime * modDate, XMP_Bool * isSuccess, XMP_OptionBits flags = 0 );
 
 /** @brief Getting associated resources from standard file handler
  *
@@ -233,7 +233,7 @@ bool GetFileModDateStandardHandler( SessionRef session, XMP_FileFormat format, S
  * @param flags			OpenFlags passed during opening a file
  * @return				true on success
  */
-bool GetAssociatedResourcesStandardHandler( SessionRef session, XMP_FileFormat format, StringPtr path, std::vector<std::string> * resourceList, XMP_OptionBits flags = NULL );
+bool GetAssociatedResourcesStandardHandler( SessionRef session, XMP_FileFormat format, StringPtr path, std::vector<std::string> * resourceList, XMP_OptionBits flags = 0 );
 
 /** @brief Checking whether metadata is writable or not into the file from standard file handler
  *
@@ -246,7 +246,7 @@ bool GetAssociatedResourcesStandardHandler( SessionRef session, XMP_FileFormat f
  * @param flags			OpenFlags passed during opening a file
  * @return				true on success
  */
-bool IsMetadataWritableStandardHandler( SessionRef session, XMP_FileFormat format, StringPtr path, XMP_Bool * isWritable, XMP_OptionBits flags = NULL );
+bool IsMetadataWritableStandardHandler( SessionRef session, XMP_FileFormat format, StringPtr path, XMP_Bool * isWritable, XMP_OptionBits flags = 0 );
 
 /** @brief Request additional API suite from the host.
  *
