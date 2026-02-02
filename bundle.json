@@ -1,0 +1,50 @@
+{
+    "name": "@ohos/xmp_toolkit_sdk",
+    "description": "XMP Toolkit SDK for metadata processing and management.",
+    "version": "2025.03",
+    "license": "BSD 3-Clause",
+    "publishAs": "code-segment",
+    "segment": {
+        "destPath": "third_party/xmp_toolkit_sdk"
+    },
+    "dirs": {},
+    "scripts": {},
+    "licensePath": "LICENSE",
+    "readmePath": {
+        "en": "README.md"
+    },
+    "component": {
+        "name": "xmp_toolkit_sdk",
+        "subsystem": "thirdparty",
+        "syscap": [],
+        "features": [],
+        "adapted_system_type": [ "standard" ],
+        "rom": "",
+        "ram": "",
+        "deps": {
+            "components": [
+                "skia",
+                "zlib"
+            ],
+            "third_party": []
+        },
+        "build": {
+            "sub_component": [
+                "//third_party/xmp_toolkit_sdk:xmpsdk"
+            ],
+            "inner_kits": [
+                {
+                    "header": {
+                        "header_files": [
+                            "XMP.hpp",
+                            "XMP.incl_cpp"
+                        ],
+                        "header_base": "//third_party/xmp_toolkit_sdk/public/include"
+                    },
+                    "name": "//third_party/xmp_toolkit_sdk:xmpsdk"
+                }
+            ],
+            "test": []
+        }
+    }
+}

@@ -143,7 +143,7 @@ public:
 	 * @param progCBInfoPtr		Contains pointer to the CallbackInfo provided by user if any
 	 * @return					true on success
 	 */
-	bool putXMPStandard( const XMP_StringPtr xmpStr, XMP_OptionBits flags = NULL, const std::string* path = NULL, ErrorCallbackInfo * errorCallback = NULL, XMP_ProgressTracker::CallbackInfo * progCBInfoPtr = NULL );
+	bool putXMPStandard( const XMP_StringPtr xmpStr, XMP_OptionBits flags = 0, const std::string* path = NULL, ErrorCallbackInfo * errorCallback = NULL, XMP_ProgressTracker::CallbackInfo * progCBInfoPtr = NULL );
 
 	/** @brief Getting file modification date from standard file handler
 	 *
@@ -155,7 +155,7 @@ public:
 	 * @param path			Path to the file that should be proceeded
 	 * @return				true on success
 	 */
-	bool getFileModDateStandardHandler( XMP_DateTime * modDate, XMP_Bool * isSuccess, XMP_OptionBits flags = NULL, const std::string* path = NULL );
+	bool getFileModDateStandardHandler( XMP_DateTime * modDate, XMP_Bool * isSuccess, XMP_OptionBits flags = 0, const std::string* path = NULL );
 	
 	/** @brief Getting associated resources from standard file handler
 	 *
@@ -166,7 +166,7 @@ public:
 	 * @param path			Path to the file that should be proceeded
 	 * @return				true on success
 	 */
-	bool getAssociatedResourcesStandardHandler( std::vector<std::string> * resourceList, XMP_OptionBits flags = NULL, const std::string* path = NULL );
+	bool getAssociatedResourcesStandardHandler( std::vector<std::string> * resourceList, XMP_OptionBits flags = 0, const std::string* path = NULL );
 
 	/** @brief Checking whether metadata is writable or not into the file from standard file handler
 	 *
@@ -177,7 +177,7 @@ public:
 	 * @param path			Path to the file that should be proceeded
 	 * @return				true on success
 	 */
-	bool isMetadataWritableStandardHandler( XMP_Bool * isWritable, XMP_OptionBits flags = NULL, const std::string* path = NULL );
+	bool isMetadataWritableStandardHandler( XMP_Bool * isWritable, XMP_OptionBits flags = 0, const std::string* path = NULL );
 
 	/** @brief Get file format
 	 *
