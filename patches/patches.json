@@ -1,0 +1,14 @@
+ {
+ 	     "patches": [
+ 	         {
+ 	             "project":"multimedia_image_framework",
+ 	             "path":"foundation/multimedia/image_framework",
+ 	             "pr_url":"https://gitcode.com/openharmony/multimedia_image_framework/pull/5052"
+ 	         },
+ 	         {
+ 	             "project":"vendor_hihope",
+ 	             "path":"vendor/hihope",
+ 	             "pr_url":"https://gitcode.com/openharmony/vendor_hihope/pull/1605"
+ 	         }
+ 	     ]
+ 	 }

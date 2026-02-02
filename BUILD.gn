@@ -1,0 +1,281 @@
+# Copyright (C) 2026 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+_xmpsdk_include_dirs = [
+  ".",
+  "public/include",
+  "XMPCore",
+  "XMPCore/source",
+  "XMPCore/Interfaces",
+  "XMPCore/ImplHeaders",
+  "XMPCore/resource/linux",
+  "XMPFiles",
+  "XMPFiles/source",
+  "XMPFiles/source/FileHandlers",
+  "XMPFiles/source/FormatSupport",
+  "XMPFiles/source/FormatSupport/AIFF",
+  "XMPFiles/source/FormatSupport/IFF",
+  "XMPFiles/source/FormatSupport/WAVE",
+  "XMPFiles/source/NativeMetadataSupport",
+  "XMPFiles/source/PluginHandler",
+  "XMPCommon",
+  "XMPCommon/source",
+  "XMPCommon/BaseClasses",
+  "XMPCommon/ImplHeaders",
+  "XMPCommon/Interfaces",
+  "XMPCommon/Interfaces/BaseInterfaces",
+  "XMPCommon/Utilities",
+  "source",
+  "XMPFilesPlugins/api/source",
+  "third-party/zuid/interfaces",
+]
+
+config("xmpsdk_public_config") {
+  include_dirs = _xmpsdk_include_dirs
+  cflags = [
+    "-fPIC",
+    "-fexceptions",
+  ]
+
+  cflags_cc = [
+    "-fPIC",
+    "-fexceptions",
+  ]
+}
+
+config("xmpsdk_config") {
+  include_dirs = _xmpsdk_include_dirs
+
+  defines = [
+    "UNIX_ENV=1",
+    "BUILDING_XMPCOMMON_LIB=1",
+    "BUILDING_XMPCOMMON_AS_DYNAMIC=1",
+    "BUILDING_XMPCORE_LIB=1",
+    "BUILDING_XMPCORE_AS_DYNAMIC=1",
+    "XMP_StaticBuild=1",
+    "XMP_INCLUDE_XMPFILES=1",
+    "XMP_COMPONENT_INT_NAMESPACE=AdobeXMPCore_Int",
+    "kBigEndianHost=0",
+    "EnableDynamicMediaHandlers=0",
+  ]
+
+  if (target_cpu == "arm" || target_cpu == "arm64") {
+    defines += [ "XMP_ANDROID_ARM=1" ]
+  }
+
+  cflags = [
+    "-fPIC",
+    "-fexceptions",
+    "-frtti",
+    "-Wno-reorder",
+    "-Wno-reorder-ctor",
+    "-Wno-reorder-init-list",
+    "-Wno-unused-variable",
+    "-Wno-int-to-void-pointer-cast",
+  ]
+
+  cflags_cc = [
+    "-fPIC",
+    "-fexceptions",
+    "-frtti",
+    "-Wno-reorder",
+    "-Wno-reorder-ctor",
+    "-Wno-reorder-init-list",
+    "-Wno-unused-variable",
+    "-Wno-unused-function",
+    "-Wno-format",
+    "-Wno-bitwise-instead-of-logical",
+    "-Wno-header-hygiene",
+    "-Wno-misleading-indentation",
+    "-Wno-tautological-overlap-compare",
+    "-Wno-int-to-void-pointer-cast",
+  ]
+}
+
+ohos_shared_library("xmpsdk") {
+  sources = [
+    # XMPCore/source
+    "XMPCore/source/ArrayNodeImpl.cpp",
+    "XMPCore/source/ClientDOMParserWrapperImpl.cpp",
+    "XMPCore/source/ClientDOMSerializerWrapperImpl.cpp",
+    "XMPCore/source/CompositeNodeImpl.cpp",
+    "XMPCore/source/CoreConfigurationManagerImpl.cpp",
+    "XMPCore/source/CoreObjectFactoryImpl.cpp",
+    "XMPCore/source/DOMImplementationRegistryImpl.cpp",
+    "XMPCore/source/DOMParserImpl.cpp",
+    "XMPCore/source/DOMSerializerImpl.cpp",
+    "XMPCore/source/ExpatAdapter.cpp",
+    "XMPCore/source/IArrayNode_I.cpp",
+    "XMPCore/source/ICompositeNode_I.cpp",
+    "XMPCore/source/ICoreConfigurationManager_I.cpp",
+    "XMPCore/source/ICoreObjectFactory_I.cpp",
+    "XMPCore/source/IDOMImplementationRegistry_I.cpp",
+    "XMPCore/source/IDOMParser_I.cpp",
+    "XMPCore/source/IDOMSerializer_I.cpp",
+    "XMPCore/source/IMetadataConverterUtils_I.cpp",
+    "XMPCore/source/IMetadata_I.cpp",
+    "XMPCore/source/INameSpacePrefixMap_I.cpp",
+    "XMPCore/source/INodeIterator_I.cpp",
+    "XMPCore/source/INode_I.cpp",
+    "XMPCore/source/IPathSegment_I.cpp",
+    "XMPCore/source/IPath_I.cpp",
+    "XMPCore/source/ISimpleNode_I.cpp",
+    "XMPCore/source/IStructureNode_I.cpp",
+    "XMPCore/source/MetadataConverterUtilsImpl.cpp",
+    "XMPCore/source/MetadataImpl.cpp",
+    "XMPCore/source/NameSpacePrefixMapImpl.cpp",
+    "XMPCore/source/NodeImpl.cpp",
+    "XMPCore/source/ParseRDF.cpp",
+    "XMPCore/source/PathImpl.cpp",
+    "XMPCore/source/PathSegmentImpl.cpp",
+    "XMPCore/source/RDFDOMParserImpl.cpp",
+    "XMPCore/source/RDFDOMSerializerImpl.cpp",
+    "XMPCore/source/SimpleNodeImpl.cpp",
+    "XMPCore/source/StructureNodeImpl.cpp",
+    "XMPCore/source/WXMPIterator.cpp",
+    "XMPCore/source/WXMPMeta.cpp",
+    "XMPCore/source/WXMPUtils.cpp",
+    "XMPCore/source/XMPCore_Impl.cpp",
+    "XMPCore/source/XMPIterator.cpp",
+    "XMPCore/source/XMPIterator2.cpp",
+    "XMPCore/source/XMPMeta-GetSet.cpp",
+    "XMPCore/source/XMPMeta-Parse.cpp",
+    "XMPCore/source/XMPMeta-Serialize.cpp",
+    "XMPCore/source/XMPMeta.cpp",
+    "XMPCore/source/XMPMeta2-GetSet.cpp",
+    "XMPCore/source/XMPUtils-FileInfo.cpp",
+    "XMPCore/source/XMPUtils.cpp",
+    "XMPCore/source/XMPUtils2.cpp",
+
+    # XMPFiles/source - FileHandlers
+    "XMPFiles/source/FileHandlers/Basic_Handler.cpp",
+    "XMPFiles/source/FileHandlers/GIF_Handler.cpp",
+    "XMPFiles/source/FileHandlers/InDesign_Handler.cpp",
+    "XMPFiles/source/FileHandlers/JPEG_Handler.cpp",
+    "XMPFiles/source/FileHandlers/PNG_Handler.cpp",
+    "XMPFiles/source/FileHandlers/PSD_Handler.cpp",
+    "XMPFiles/source/FileHandlers/PostScript_Handler.cpp",
+    "XMPFiles/source/FileHandlers/SVG_Handler.cpp",
+    "XMPFiles/source/FileHandlers/Scanner_Handler.cpp",
+    "XMPFiles/source/FileHandlers/TIFF_Handler.cpp",
+    "XMPFiles/source/FileHandlers/Trivial_Handler.cpp",
+    "XMPFiles/source/FileHandlers/UCF_Handler.cpp",
+
+    # XMPFiles/source - FormatSupport
+    "XMPFiles/source/FormatSupport/ID3_Support.cpp",
+    "XMPFiles/source/FormatSupport/IFF/Chunk.cpp",
+    "XMPFiles/source/FormatSupport/IFF/ChunkController.cpp",
+    "XMPFiles/source/FormatSupport/IFF/ChunkPath.cpp",
+    "XMPFiles/source/FormatSupport/IFF/IChunkBehavior.cpp",
+    "XMPFiles/source/FormatSupport/IPTC_Support.cpp",
+    "XMPFiles/source/FormatSupport/ISOBaseMedia_Support.cpp",
+    "XMPFiles/source/FormatSupport/META_Support.cpp",
+    "XMPFiles/source/FormatSupport/PNG_Support.cpp",
+    "XMPFiles/source/FormatSupport/PSIR_FileWriter.cpp",
+    "XMPFiles/source/FormatSupport/PSIR_MemoryReader.cpp",
+    "XMPFiles/source/FormatSupport/PackageFormat_Support.cpp",
+    "XMPFiles/source/FormatSupport/PostScript_Support.cpp",
+    "XMPFiles/source/FormatSupport/ReconcileIPTC.cpp",
+    "XMPFiles/source/FormatSupport/ReconcileLegacy.cpp",
+    "XMPFiles/source/FormatSupport/ReconcileTIFF.cpp",
+    "XMPFiles/source/FormatSupport/Reconcile_Impl.cpp",
+    "XMPFiles/source/FormatSupport/SVG_Adapter.cpp",
+    "XMPFiles/source/FormatSupport/TIFF_FileWriter.cpp",
+    "XMPFiles/source/FormatSupport/TIFF_MemoryReader.cpp",
+    "XMPFiles/source/FormatSupport/TIFF_Support.cpp",
+    "XMPFiles/source/FormatSupport/TimeConversionUtils.cpp",
+    "XMPFiles/source/FormatSupport/XMPScanner.cpp",
+
+    # XMPFiles/source - Others
+    "XMPFiles/source/HandlerRegistry.cpp",
+    "XMPFiles/source/NativeMetadataSupport/IMetadata.cpp",
+    "XMPFiles/source/NativeMetadataSupport/IReconcile.cpp",
+    "XMPFiles/source/NativeMetadataSupport/MetadataSet.cpp",
+    "XMPFiles/source/PluginHandler/FileHandlerInstance.cpp",
+    "XMPFiles/source/PluginHandler/HostAPIImpl.cpp",
+    "XMPFiles/source/PluginHandler/Module.cpp",
+    "XMPFiles/source/PluginHandler/OS_Utils_Linux.cpp",
+    "XMPFiles/source/PluginHandler/PluginManager.cpp",
+    "XMPFiles/source/PluginHandler/XMPAtoms.cpp",
+    "XMPFiles/source/WXMPFiles.cpp",
+    "XMPFiles/source/XMPFiles.cpp",
+    "XMPFiles/source/XMPFiles_Impl.cpp",
+
+    # XMPCommon/source
+    "XMPCommon/source/AutoSharedLock.cpp",
+    "XMPCommon/source/ConfigurableImpl.cpp",
+    "XMPCommon/source/ConfigurationManagerImpl.cpp",
+    "XMPCommon/source/DefaultErrorNotifierImpl.cpp",
+    "XMPCommon/source/ErrorImpl.cpp",
+    "XMPCommon/source/ErrorNotifierWrapperImpl.cpp",
+    "XMPCommon/source/IConfigurable_I.cpp",
+    "XMPCommon/source/IConfigurationManager_I.cpp",
+    "XMPCommon/source/IErrorNotifier_I.cpp",
+    "XMPCommon/source/IError_I.cpp",
+    "XMPCommon/source/IMemoryAllocator_I.cpp",
+    "XMPCommon/source/IUTF8StringComparator.cpp",
+    "XMPCommon/source/IUTF8String_I.cpp",
+    "XMPCommon/source/MemoryAllocatorWrapperImpl.cpp",
+    "XMPCommon/source/MemoryManagedObject.cpp",
+    "XMPCommon/source/SharedMutexImpl.cpp",
+    "XMPCommon/source/SharedObjectImpl.cpp",
+    "XMPCommon/source/ThreadSafeImpl.cpp",
+    "XMPCommon/source/UTF8StringImpl.cpp",
+    "XMPCommon/source/XMPCommon.cpp",
+
+    # public/include
+    "public/include/XMPCommon/source/IErrorNotifier.cpp",
+
+    # source
+    "source/Host_IO-POSIX.cpp",
+    "source/IOUtils.cpp",
+    "source/PerfUtils.cpp",
+    "source/SafeStringAPIs.cpp",
+    "source/UnicodeConversions.cpp",
+    "source/XIO.cpp",
+    "source/XML_Node.cpp",
+    "source/XMPFiles_IO.cpp",
+    "source/XMP_LibUtils.cpp",
+    "source/XMP_ProgressTracker.cpp",
+
+    # XMPFilesPlugins/api/source
+    "XMPFilesPlugins/api/source/HostAPIAccess.cpp",
+    "XMPFilesPlugins/api/source/PluginAPIImpl.cpp",
+    "XMPFilesPlugins/api/source/PluginBase.cpp",
+    "XMPFilesPlugins/api/source/PluginRegistry.cpp",
+    "XMPFilesPlugins/api/source/PluginUtils.cpp",
+
+    # Template plugin handler (if shipping built-in)
+    "XMPFilesPlugins/PluginTemplate/source/Template_Handler.cpp",
+
+    # MD5 implementation required for digests
+    "third-party/zuid/interfaces/MD5.cpp",
+  ]
+
+  configs = [ ":xmpsdk_config" ]
+
+  public_configs = [ ":xmpsdk_public_config" ]
+
+  external_deps = [
+    "skia:expatm133",
+    "zlib:libz"
+  ]
+
+  subsystem_name = "thirdparty"
+  part_name = "xmp_toolkit_sdk"
+  output_name = "xmpsdk"
+  output_extension = "so"
+  install_images = [ "system" ]
+}
