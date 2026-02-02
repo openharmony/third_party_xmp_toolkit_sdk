@@ -1,0 +1,10 @@
+ [
+ 	     {
+ 	         "Name": "XMP Toolkit SDK",
+ 	         "License": "BSD 3-Clause License",
+ 	         "License File": "LICENSE",
+ 	         "Version Number": "v2025.03",
+ 	         "Upstream URL": "https://github.com/adobe/XMP-Toolkit-SDK",
+ 	         "Description": "The XMP Toolkit allows you to integrate XMP functionality to your product or solution."
+ 	     }
+  ]
