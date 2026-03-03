@@ -304,7 +304,7 @@ const blob: ArrayBuffer = await xmpMetadata.getBlob();
 await xmpMetadata.setBlob(blob);
 ```
 
-更多接口定义、支持格式（如 JPEG、PNG、GIF、TIFF、DNG）与错误码请参考图片框架相关文档。
+更多接口定义、支持格式、详细规格与错误码请参考图片框架相关文档。
 
 ## 功能支持说明
 
