@@ -33,31 +33,33 @@ README.md           README 说明
 
 ### 设备开发者
 
-#### 系统组件引入xmp_toolkit_sdk步骤
+#### 特性定制说明
+
+`xmp_toolkit_sdk` 为 OpenHarmony 系统的**必选特性**，不涉及特性定制化处理。系统组件只需按标准流程引入即可，无需进行额外的配置或裁剪。
+
+#### 系统组件引入步骤
 
 本仓位于`//third_party/xmp_toolkit_sdk`，用于系统组件在编译期链接 XMP Toolkit SDK。
 
-系统组件依赖步骤：
+**步骤 1：在使用方的 `bundle.json` 中添加外部依赖**
 
-1. 在使用方的`bundle.json`中添加外部依赖:
+以图片框架为例，文件路径为`//foundation/multimedia/image_framework/bundle.json`。
 
-   以图片框架为例，文件路径为`//foundation/multimedia/image_framework/bundle.json`。
+```json
+ "deps": {
+        "components": [
+          "xmp_toolkit_sdk"
+        ]
+}
+```
 
-   ```
-    "deps": {
-           "components": [
-             "xmp_toolkit_sdk"
-           ]
-   }
-   ```
+**步骤 2：在使用方的 `BUILD.gn` 中添加依赖**
 
-2. 在使用方的`BUILD.gn`中添加依赖：
+以图片框架为例，添加位置为`//foundation/multimedia/image_framework/interfaces/innerkits/BUILD.gn`。
 
-   以图片框架为例，添加位置为`//foundation/multimedia/image_framework/interfaces/innerkits/BUILD.gn`。
-
-   ```
-   external_deps += [ "xmp_toolkit_sdk:xmpsdk" ]
-   ```
+```gn
+external_deps += [ "xmp_toolkit_sdk:xmpsdk" ]
+```
 
 备注：`xmp_toolkit_sdk`构建产物为`libxmpsdk.so`，属于**动态库依赖**，通常由动态链接器随进程启动自动加载，无需业务侧显式`dlopen`。
 
@@ -67,7 +69,7 @@ README.md           README 说明
 
 (1) 初始化 XMP Toolkit 的全局状态。
 
-  ```
+  ```cpp
   // XMPMeta
   static bool SXMPMeta::Initialize();
   static void SXMPMeta::Terminate();
@@ -79,7 +81,7 @@ README.md           README 说明
 
 (2) 打开文件并读取 XMP。
 
-  ```
+  ```cpp
   bool SXMPFiles::OpenFile(XMP_StringPtr filePath,
                            XMP_FileFormat format = kXMP_UnknownFile,
                            XMP_OptionBits openFlags = 0);
@@ -116,7 +118,7 @@ README.md           README 说明
 
 (3) 读取/设置/删除 XMP 属性。
 
-  ```
+  ```cpp
   void SXMPMeta::SetProperty(XMP_StringPtr schemaNS,
                              XMP_StringPtr propName,
                              XMP_StringPtr propValue,
@@ -150,7 +152,7 @@ README.md           README 说明
 
 (4) 序列化/反序列化 XMP（RDF/XML）。
 
-  ```
+  ```cpp
   void SXMPMeta::ParseFromBuffer(XMP_StringPtr buffer,
                                  XMP_StringLen bufferSize,
                                  XMP_OptionBits options = 0);
@@ -172,7 +174,7 @@ README.md           README 说明
 
 (5) 写回文件并关闭。
 
-  ```
+  ```cpp
 bool SXMPFiles::CanPutXMP(const SXMPMeta &xmpObj);
 void SXMPFiles::PutXMP(const SXMPMeta &xmpObj);
 void SXMPFiles::CloseFile(XMP_OptionBits closeFlags = 0);
@@ -207,6 +209,8 @@ XMP Toolkit SDK 的 C++ 接口不直接对三方应用开放。
 - **二进制形式读取/写入XMP**：获取 blob 或使用 blob 覆盖
 - **注册命名空间与前缀**：在操作自定义标签前注册命名空间
 
+#### 接口API示例
+
 典型接口示例（图片框架对应用开发者提供的 API，示例为精简片段）：
 
 **1) 读取图片 XMP 元数据**
@@ -215,7 +219,7 @@ XMP Toolkit SDK 的 C++ 接口不直接对三方应用开放。
 
 示例Demo：
 
-```
+```ts
 import { image } from '@kit.ImageKit';
 
 const imageSource: image.ImageSource = image.createImageSource(filePath);
@@ -228,7 +232,7 @@ const xmpMetadata: image.XMPMetadata | null = await imageSource.readXMPMetadata(
 
 示例Demo：
 
-```
+```ts
 import { image } from '@kit.ImageKit';
 
 const imageSource: image.ImageSource = image.createImageSource(filePath);
@@ -243,7 +247,7 @@ await imageSource.writeXMPMetadata(xmpMetadata);
 
 示例Demo：
 
-```
+```ts
 import { image } from '@kit.ImageKit';
 
 const xmpMetadata = new image.XMPMetadata();
@@ -256,7 +260,7 @@ await xmpMetadata.registerNamespacePrefix('http://mybook.com/story/1.0/', 'book'
 
 示例Demo：
 
-```
+```ts
 import { image } from '@kit.ImageKit';
 
 await xmpMetadata.setValue('xmp:title', image.XMPTagType.SIMPLE, 'My Title');
@@ -268,7 +272,7 @@ await xmpMetadata.setValue('xmp:title', image.XMPTagType.SIMPLE, 'My Title');
 
 示例Demo：
 
-```
+```ts
 import { image } from '@kit.ImageKit';
 
 const tag: image.XMPTag | null = await xmpMetadata.getTag('xmp:title');
@@ -280,7 +284,7 @@ const tag: image.XMPTag | null = await xmpMetadata.getTag('xmp:title');
 
 示例Demo：
 
-```
+```ts
 import { image } from '@kit.ImageKit';
 
 xmpMetadata.enumerateTags((path: string, tag: image.XMPTag): boolean => {
@@ -299,12 +303,74 @@ xmpMetadata.enumerateTags((path: string, tag: image.XMPTag): boolean => {
 
 示例Demo：
 
-```
+```ts
 const blob: ArrayBuffer = await xmpMetadata.getBlob();
 await xmpMetadata.setBlob(blob);
 ```
 
 更多接口定义、支持格式、详细规格与错误码请参考图片框架相关文档。
+
+#### 典型场景示例
+
+**场景 1：读取标题信息用于展示（读取）**
+
+适用场景：媒体详情页展示标题/描述；或者构建索引时读取若干关键字段。
+
+```ts
+import { image } from '@kit.ImageKit';
+
+async function readXMPTitle(filePath: string) {
+  const imageSource: image.ImageSource = image.createImageSource(filePath);
+  const xmpMetadata: image.XMPMetadata | null = await imageSource.readXMPMetadata();
+  if (xmpMetadata) {
+    const titleTag: image.XMPTag | null = await xmpMetadata.getTag('xmp:title');
+    if (titleTag) {
+      console.info(`xmp:title=${titleTag.value}`);
+    }
+  }
+}
+```
+
+**场景 2：编辑并保存元数据（读-改-写）**
+
+适用场景：用户在编辑页面修改标题/描述/作者等信息后，需要持久化到图片文件中。
+
+```ts
+import { image } from '@kit.ImageKit';
+
+async function editAndSaveXMP(filePath: string) {
+  const imageSource: image.ImageSource = image.createImageSource(filePath);
+  let xmpMetadata: image.XMPMetadata | null = await imageSource.readXMPMetadata();
+  if (!xmpMetadata) {
+    xmpMetadata = new image.XMPMetadata();
+  }
+
+  await xmpMetadata.setValue('xmp:title', image.XMPTagType.SIMPLE, 'My Title');
+  await xmpMetadata.setValue('xmp:CreatorTool', image.XMPTagType.SIMPLE, 'OpenHarmony');
+  await imageSource.writeXMPMetadata(xmpMetadata);
+}
+```
+
+**场景 3：写入业务自定义字段（自定义命名空间）**
+
+适用场景：业务需要写入自定义字段（例如内容来源、分类、审核结论等），避免与标准 XMP 命名空间冲突。
+
+```ts
+import { image } from '@kit.ImageKit';
+
+async function writeCustomXMP(filePath: string) {
+  const imageSource: image.ImageSource = image.createImageSource(filePath);
+  let xmpMetadata: image.XMPMetadata | null = await imageSource.readXMPMetadata();
+  if (!xmpMetadata) {
+    xmpMetadata = new image.XMPMetadata();
+  }
+
+  await xmpMetadata.registerNamespacePrefix('http://mybook.com/story/1.0/', 'book');
+  await xmpMetadata.setValue('book:chapter', image.XMPTagType.SIMPLE, '1');
+  await xmpMetadata.setValue('book:source', image.XMPTagType.SIMPLE, 'imported');
+  await imageSource.writeXMPMetadata(xmpMetadata);
+}
+```
 
 ## 功能支持说明
 
