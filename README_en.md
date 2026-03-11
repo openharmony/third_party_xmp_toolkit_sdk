@@ -311,7 +311,7 @@ For more API definitions, supported formats, detailed specifications, and error 
 
 #### Typical Scenario Examples
 
-**Scenario 1: Read title information for display (read)**
+**Scenario 1: Read title information of image for display (read)**
 
 Applicable scenarios: Display title/description on media details pages; or extract key fields when building indexes.
 
@@ -330,7 +330,7 @@ async function readXMPTitle(filePath: string) {
 }
 ```
 
-**Scenario 2: Edit and save metadata (read-modify-write)**
+**Scenario 2: Edit and save the image XMP metadata (read-modify-write)**
 
 Applicable scenarios: After users modify title/description/author information in an editing page, persist it to the image file.
 
@@ -350,9 +350,9 @@ async function editAndSaveXMP(filePath: string) {
 }
 ```
 
-**Scenario 3: Write business custom fields (custom namespace)**
+**Scenario 3: Write business custom fields to image (custom namespace)**
 
-Applicable scenarios: Business needs to write custom fields (e.g., content source, classification, audit results), avoiding conflicts with standard XMP namespaces.
+Applicable scenarios: Business needs to write custom fields (e.g., book information, scenery information, food description scene information, etc), avoiding conflicts with standard XMP namespaces.
 
 ```ts
 import { image } from '@kit.ImageKit';
