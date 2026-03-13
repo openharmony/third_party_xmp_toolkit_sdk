@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <licensefile></licensefile>
+        <policylist>
+            <policy name="projectPolicy" desc="">
+                <policyitem type="compatibility" name="GPL-2.0+" path="abc/.*" desc="Process that runs independently, invoked by the X process."/>
+                <policyitem type="compatibility" name="Adobe License" path=".*" desc="Process that runs independently, invoked by the X process."/>
+                <policyitem type="compatibility" name="MIT|GPLStyleLicense" path=".*" desc="Process that runs independently, invoked by the X process."/>
+                <policyitem type="compatibility" name="GPL-2.0-or-later" path=".*" desc="Process that runs independently, invoked by the X process."/>
+                <policyitem type="compatibility" name="GPLStyleLicense" path=".*" desc="Process that runs independently, invoked by the X process."/>
+                <policyitem type="compatibility" name="RSA-MD" path=".*" desc="Process that runs independently, invoked by the X process."/>
+            </policy>
+        </policylist>
+        <filefilterlist>
+            <filefilter name="defaultFilter" desc="Files not to check">
+                <filteritem type="filename" name="*.png" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.xpi" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.ai" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.so" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.pdf" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.exp" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.avi" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.strings" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.indd" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.jpg" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.mov" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.mp3" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.psd" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.tif" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.wav" desc="Describe the reason for filtering scan results"/>
+                <filteritem type="filename" name="*.dll" desc="Describe the reason for filtering scan results"/>
+            </filefilter>
+        </filefilterlist>
+        <licensematcherlist>
+            <licensematcher name="Adobe License" desc="If the scanning result is InvalidLicense, you can define matching rules here. Note that quotation marks must be escaped.">
+                <licensetext name="
+                    // NOTICE: Adobe permits you to use, modify, and distribute this file in accordance with the terms
+// of the Adobe license agreement accompanying it. 
+				 " desc=""/>
+            </licensematcher>
+        </licensematcherlist>
+    </oatconfig>
+</configuration>
