@@ -19,8 +19,8 @@
         "syscap": [],
         "features": [],
         "adapted_system_type": [ "standard" ],
-        "rom": "",
-        "ram": "",
+        "rom": "1602KB",
+        "ram": "1468KB",
         "deps": {
             "components": [
                 "skia",
@@ -43,8 +43,7 @@
                     },
                     "name": "//third_party/xmp_toolkit_sdk:xmpsdk"
                 }
-            ],
-            "test": []
+            ]
         }
     }
 }
