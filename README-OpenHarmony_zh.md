@@ -6,9 +6,37 @@
 
 在 OpenHarmony 中，xmp_toolkit_sdk 主要作为媒体子系统的基础组件，为图片等媒体文件提供 XMP 元数据的读写能力。
 
+## 功能支持说明
+
+OpenHarmony 集成的 xmp_toolkit_sdk 用于提供 XMP 元数据的读写能力，主要面向 JPEG、PNG、GIF 等常见图片格式（具体支持范围以实际接入与编译配置为准）。
+
 ## OpenHarmony集成架构图
 
 ![](figures/zh-cn_XMPSDK集成架构图.png)
+
+## XMP Toolkit SDK交互流程
+
++ 读取XMP元数据
+
+1. 调用 `ImageSource` 的读取接口
+2. `ImageSource` 内部通过 XMP-Toolkit-SDK 的 OpenFile 获取目标文件的数据
+3. 调用 XMP-Toolkit-SDK 的 `GetXMP` 获取原始XMP数据
+4. 将获取的数据封装为 `XMPMetadata` 对象返回
+
++ 编辑XMP元数据
+
+1. 调用 `XMPMetadata` 的编辑接口
+2. 内部通过 XMP-Toolkit-SDK 的 `SetProperty`、`DeleteProperty` 等方法修改元数据
+
+
++ 写入XMP元数据
+
+1. 调用 `ImageSource` 的写入接口
+2. `ImageSource` 内部通过 XMP-Toolkit-SDK 的 `PutXMP` 将元数据写入 XMP 包
+3. 调用 `CloseFile` 完成持久化并关闭文件
+
+![](figures/zh-cn_XMPSDK交互流.png)
+
 
 ## 目录结构
 
@@ -371,10 +399,6 @@ async function writeCustomXMP(filePath: string) {
   await imageSource.writeXMPMetadata(xmpMetadata);
 }
 ```
-
-## 功能支持说明
-
-OpenHarmony 集成的 xmp_toolkit_sdk 用于提供 XMP 元数据的读写能力，主要面向 JPEG、PNG、GIF 等常见图片格式（具体支持范围以实际接入与编译配置为准）。
 
 ## 其它三方依赖说明
 
