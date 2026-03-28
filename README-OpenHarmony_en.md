@@ -6,9 +6,36 @@ This repository contains the third-party open-source software XMP Toolkit SDK (A
 
 In OpenHarmony, `xmp_toolkit_sdk` mainly serves as a foundational component of the multimedia subsystem, providing XMP metadata read/write capabilities for media files such as images.
 
+## Feature Support
+
+The `xmp_toolkit_sdk` integrated in OpenHarmony provides XMP metadata read/write capabilities, mainly for common image formats such as JPEG, PNG, GIF (the actual supported scope depends on the integration and build configuration).
+
 ## OpenHarmony Integration Architecture Diagram
 
 ![](figures/en-us_XMPSDK_intergrated_arch.png)
+
+## XMP Toolkit SDK Interaction Flow
+
++ Read XMP metadata
+
+1. Call the read interface of `ImageSource`
+2. `ImageSource` internally uses XMP-Toolkit-SDK's OpenFile to obtain data from the target file
+3. Call XMP-Toolkit-SDK's `GetXMP` to obtain the original XMP data
+4. Wrap the obtained data into an `XMPMetadata` object and return it
+
++ Edit XMP metadata
+
+1. Call the edit interface of `XMPMetadata`
+2. Internally modify metadata through XMP-Toolkit-SDK's `SetProperty`, `DeleteProperty`, and other methods
+
+
++ Write XMP metadata
+
+1. Call the write interface of `ImageSource`
+2. `ImageSource` internally uses XMP-Toolkit-SDK's `PutXMP` to write metadata into the XMP package
+3. Call `CloseFile` to complete persistence and close the file
+
+![](figures/en-us_XMPSDK_interaction_flow.png)
 
 ## Directory Structure
 
@@ -370,10 +397,6 @@ async function writeCustomXMP(filePath: string) {
   await imageSource.writeXMPMetadata(xmpMetadata);
 }
 ```
-
-## Feature Support
-
-The `xmp_toolkit_sdk` integrated in OpenHarmony provides XMP metadata read/write capabilities, mainly for common image formats such as JPEG, PNG, GIF (the actual supported scope depends on the integration and build configuration).
 
 ## Other Third-Party Dependencies
 
