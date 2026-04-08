@@ -1201,8 +1201,13 @@ enum {
     kXMPFiles_OptimizeFileLayout    = 0x00000200,
 
 	/// When updating a PDF preserve state of document
-    kXMPFiles_PreservePDFState    =  0x00000400
+    kXMPFiles_PreservePDFState    =  0x00000400,
 
+	/// Disable legacy metadata import.
+	kXMPFiles_DisableLegacyImport   =  0x20000000,
+
+	/// Disable legacy metadata export.
+	kXMPFiles_DisableLegacyExport   =  0x40000000
 };
 
 /// @brief Option bit flags for \c TXMPFiles::CloseFile().

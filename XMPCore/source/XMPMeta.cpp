@@ -41,6 +41,10 @@
 
 using namespace std;
 
+#ifndef XMP_DISABLE_STANDARD_ALIASES
+	#define XMP_DISABLE_STANDARD_ALIASES 0
+#endif
+
 #if XMP_WinBuild
 	#pragma warning ( disable : 4533 )	// initialization of '...' is skipped by 'goto ...'
 	#pragma warning ( disable : 4702 )	// unreachable code
@@ -867,7 +871,9 @@ XMPMeta::Initialize()
 
 	(void) RegisterNamespace( kXMP_NS_iXML, "iXML", &voidPtr, &voidLen );
 
+#if !XMP_DISABLE_STANDARD_ALIASES
 	RegisterStandardAliases();
+#endif
 
 	// Initialize the other core classes.
 
