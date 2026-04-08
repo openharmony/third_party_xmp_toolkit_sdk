@@ -36,10 +36,12 @@
                 {
                     "header": {
                         "header_files": [
-                            "XMP.hpp",
-                            "XMP.incl_cpp"
+                            "public/include/XMP.hpp",
+                            "public/include/XMP.incl_cpp",
+                            "source/XMPBuffer_IO.hpp",
+                            "source/XMPFd_IO.hpp"
                         ],
-                        "header_base": "//third_party/xmp_toolkit_sdk/public/include"
+                        "header_base": "//third_party/xmp_toolkit_sdk"
                     },
                     "name": "//third_party/xmp_toolkit_sdk:xmpsdk"
                 }

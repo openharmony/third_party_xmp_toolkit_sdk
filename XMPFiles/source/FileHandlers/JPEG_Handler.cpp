@@ -605,6 +605,10 @@ void JPEG_MetaHandler::ProcessXMP()
 	// should they want to proceed with that.
 
 	bool haveXMP = false;
+	bool doLegacyImport = true;
+	if (this->parent != nullptr) {
+		doLegacyImport = ((this->parent->openFlags & kXMPFiles_DisableLegacyImport) == 0);
+	}
 
 	if ( ! this->xmpPacket.empty() ) {
 		XMP_Assert ( this->containsXMP );
@@ -655,9 +659,11 @@ void JPEG_MetaHandler::ProcessXMP()
 
 	if ( haveIPTC && (! haveXMP) && (iptcDigestState == kDigestMatches) ) iptcDigestState = kDigestMissing;
 	if (iptcInfo.dataLen) iptc.ParseMemoryDataSets ( iptcInfo.dataPtr, iptcInfo.dataLen );
-	ImportPhotoData ( exif, iptc, psir, iptcDigestState, &this->xmpObj, options );
+	if (doLegacyImport) {
+		ImportPhotoData ( exif, iptc, psir, iptcDigestState, &this->xmpObj, options );
+	}
 
-	this->containsXMP = true;	// Assume we had something for the XMP.
+	this->containsXMP = (haveXMP || doLegacyImport);	// true if we have XMP or legacy metadata.
 
 }	// JPEG_MetaHandler::ProcessXMP
 
@@ -679,8 +685,13 @@ void JPEG_MetaHandler::UpdateFile ( bool doSafeUpdate )
 
 	// Update the IPTC-IIM and native TIFF/Exif metadata. ExportPhotoData also trips the tiff: and
 	// exif: copies from the XMP, so reserialize the now final XMP packet.
-
-	ExportPhotoData ( kXMP_JPEGFile, &this->xmpObj, this->exifMgr, this->iptcMgr, this->psirMgr );
+	bool disableLegacyExport = false;
+	if (this->parent != nullptr) {
+		disableLegacyExport = ((this->parent->openFlags & kXMPFiles_DisableLegacyExport) != 0);
+	}
+	if (!disableLegacyExport) {
+		ExportPhotoData(kXMP_JPEGFile, &this->xmpObj, this->exifMgr, this->iptcMgr, this->psirMgr);
+	}
 
 	try {
 		XMP_OptionBits options = kXMP_UseCompactFormat;
@@ -780,10 +791,16 @@ void JPEG_MetaHandler::WriteTempFile ( XMP_IO* tempRef )
 	if ( origLength < 4 ) {
 		XMP_Throw ( "JPEG must have at least SOI and EOI markers", kXMPErr_BadJPEG );
 	}
+	bool disableLegacyExport = false;
+	if (this->parent != nullptr) {
+		disableLegacyExport = ((this->parent->openFlags & kXMPFiles_DisableLegacyExport) != 0);
+	}
 
 	if ( ! skipReconcile ) {
 		// Update the IPTC-IIM and native TIFF/Exif metadata, and reserialize the now final XMP packet.
-		ExportPhotoData ( kXMP_JPEGFile, &this->xmpObj, this->exifMgr, this->iptcMgr, this->psirMgr );
+		if (!disableLegacyExport) {
+			ExportPhotoData ( kXMP_JPEGFile, &this->xmpObj, this->exifMgr, this->iptcMgr, this->psirMgr );
+		}
 		this->xmpObj.SerializeToBuffer ( &this->xmpPacket, kXMP_UseCompactFormat );
 	}
 
@@ -828,7 +845,7 @@ void JPEG_MetaHandler::WriteTempFile ( XMP_IO* tempRef )
 
 	XMP_Uns32 first4;
 
-	if ( this->exifMgr != 0 ) {
+	if ( (!disableLegacyExport) && (this->exifMgr != 0) ) {
 
 		void* exifPtr;
 		XMP_Uns32 exifLen = this->exifMgr->UpdateMemoryStream ( &exifPtr );
@@ -883,7 +900,7 @@ void JPEG_MetaHandler::WriteTempFile ( XMP_IO* tempRef )
 	}
 
 	// Write the new PSIR APP13 marker segments.
-	if ( this->psirMgr != 0 ) {
+	if ( (!disableLegacyExport) && (this->psirMgr != 0) ) {
 
 		void* psirPtr;
 		XMP_Uns32 psirLen = this->psirMgr->UpdateMemoryResources ( &psirPtr );
@@ -951,7 +968,7 @@ void JPEG_MetaHandler::WriteTempFile ( XMP_IO* tempRef )
 						 (kMainXMPSignatureLength < kExtXMPSignatureLength) );
 			signatureLen = origRef->Read ( buffer, kExtXMPSignatureLength );	// Read for the longest signature.
 
-			if ( (signatureLen >= kExifSignatureLength) &&
+			if ( (!disableLegacyExport) && (signatureLen >= kExifSignatureLength) &&
 				 (CheckBytes ( &buffer[0], kExifSignatureString, kExifSignatureLength ) ||
 				  CheckBytes ( &buffer[0], kExifSignatureAltStr, kExifSignatureLength )) ) {
 				copySegment = false;
