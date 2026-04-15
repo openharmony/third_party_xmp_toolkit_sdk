@@ -247,8 +247,6 @@ ohos_shared_library("xmpsdk") {
     "source/UnicodeConversions.cpp",
     "source/XIO.cpp",
     "source/XML_Node.cpp",
-    "source/XMPBuffer_IO.cpp",
-    "source/XMPFd_IO.cpp",
     "source/XMPFiles_IO.cpp",
     "source/XMP_LibUtils.cpp",
     "source/XMP_ProgressTracker.cpp",

@@ -38,8 +38,7 @@
                         "header_files": [
                             "public/include/XMP.hpp",
                             "public/include/XMP.incl_cpp",
-                            "source/XMPBuffer_IO.hpp",
-                            "source/XMPFd_IO.hpp"
+                            "public/include/XMP_IO.hpp"
                         ],
                         "header_base": "//third_party/xmp_toolkit_sdk"
                     },
