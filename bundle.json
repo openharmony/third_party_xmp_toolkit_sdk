@@ -24,7 +24,8 @@
         "deps": {
             "components": [
                 "skia",
-                "zlib"
+                "zlib",
+                "expat"
             ],
             "third_party": []
         },
