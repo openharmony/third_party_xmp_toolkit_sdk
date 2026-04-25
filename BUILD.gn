@@ -270,7 +270,8 @@ ohos_shared_library("xmpsdk") {
 
   external_deps = [
     "skia:expatm133",
-    "zlib:libz"
+    "zlib:libz",
+    "expat:expat"
   ]
 
   subsystem_name = "thirdparty"
