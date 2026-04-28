@@ -10,6 +10,7 @@
                 <policyitem type="compatibility" name="GPL-2.0-or-later" path=".*" desc="Process that runs independently, invoked by the X process."/>
                 <policyitem type="compatibility" name="GPLStyleLicense" path=".*" desc="Process that runs independently, invoked by the X process."/>
                 <policyitem type="compatibility" name="RSA-MD" path=".*" desc="Process that runs independently, invoked by the X process."/>
+                <policyitem type="compatibility" name="Apache-2.0" path=".*" desc="OpenHarmony intrusive modifications are licensed under Apache-2.0."/>
             </policy>
         </policylist>
         <filefilterlist>
