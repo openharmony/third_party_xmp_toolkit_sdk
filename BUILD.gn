@@ -67,6 +67,7 @@ config("xmpsdk_config") {
     "XMP_StaticBuild=1",
     "XMP_INCLUDE_XMPFILES=1",
     "XMP_COMPONENT_INT_NAMESPACE=AdobeXMPCore_Int",
+    "XMP_DISABLE_STANDARD_ALIASES=1",
     "kBigEndianHost=0",
     "EnableDynamicMediaHandlers=0",
   ]
@@ -246,6 +247,8 @@ ohos_shared_library("xmpsdk") {
     "source/UnicodeConversions.cpp",
     "source/XIO.cpp",
     "source/XML_Node.cpp",
+    "source/XMPBuffer_IO.cpp",
+    "source/XMPFd_IO.cpp",
     "source/XMPFiles_IO.cpp",
     "source/XMP_LibUtils.cpp",
     "source/XMP_ProgressTracker.cpp",
@@ -278,4 +281,5 @@ ohos_shared_library("xmpsdk") {
   output_name = "xmpsdk"
   output_extension = "so"
   install_images = [ "system" ]
+  version_script = "xmpsdk.versionscript"
 }

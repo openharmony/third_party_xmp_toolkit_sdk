@@ -257,6 +257,10 @@ void TIFF_MetaHandler::ProcessXMP()
 	// should they want to proceed with that.
 
 	bool haveXMP = false;
+	bool doLegacyImport = true;
+	if (this->parent != nullptr) {
+		doLegacyImport = ((this->parent->openFlags & kXMPFiles_DisableLegacyImport) == 0);
+	}
 
 	if ( ! this->xmpPacket.empty() ) {
 		XMP_Assert ( this->containsXMP );
@@ -273,9 +277,11 @@ void TIFF_MetaHandler::ProcessXMP()
 
 	if ( haveIPTC && (! haveXMP) && (iptcDigestState == kDigestMatches) ) iptcDigestState = kDigestMissing;
 	if (iptcInfo.dataLen) iptc.ParseMemoryDataSets ( iptcInfo.dataPtr, iptcInfo.dataLen );
-	ImportPhotoData ( tiff, iptc, psir, iptcDigestState, &this->xmpObj, options );
+	if (doLegacyImport) {
+		ImportPhotoData(tiff, iptc, psir, iptcDigestState, &this->xmpObj, options);
+	}
 
-	this->containsXMP = true;	// Assume we now have something in the XMP.
+	this->containsXMP = (haveXMP || doLegacyImport);	// true if we have XMP or legacy metadata.
 
 }	// TIFF_MetaHandler::ProcessXMP
 
@@ -307,8 +313,13 @@ void TIFF_MetaHandler::UpdateFile ( bool doSafeUpdate )
 
 	// Update the IPTC-IIM and native TIFF/Exif metadata. ExportPhotoData also trips the tiff: and
 	// exif: copies from the XMP, so reserialize the now final XMP packet.
-
-	ExportPhotoData ( kXMP_TIFFFile, &this->xmpObj, &this->tiffMgr, this->iptcMgr, this->psirMgr );
+	bool disableLegacyExport = false;
+	if (this->parent != nullptr) {
+		disableLegacyExport = ((this->parent->openFlags & kXMPFiles_DisableLegacyExport) != 0);
+	}
+	if (!disableLegacyExport) {
+		ExportPhotoData(kXMP_TIFFFile, &this->xmpObj, &this->tiffMgr, this->iptcMgr, this->psirMgr);
+	}
 
 	try {
 		XMP_OptionBits options = kXMP_UseCompactFormat;
