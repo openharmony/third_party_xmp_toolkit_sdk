@@ -1,7 +1,7 @@
 {
     "name": "@ohos/xmp_toolkit_sdk",
     "description": "XMP Toolkit SDK for metadata processing and management.",
-    "version": "2025.03",
+    "version": "2025.3",
     "license": "BSD-3-Clause",
     "publishAs": "code-segment",
     "segment": {
