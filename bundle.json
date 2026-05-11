@@ -23,8 +23,8 @@
         "ram": "1468KB",
         "deps": {
             "components": [
-                "skia",
-                "zlib"
+                "zlib",
+                "expat"
             ],
             "third_party": []
         },

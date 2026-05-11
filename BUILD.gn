@@ -269,7 +269,7 @@ ohos_shared_library("xmpsdk") {
   public_configs = [ ":xmpsdk_public_config" ]
 
   external_deps = [
-    "skia:expatm133",
+    "expat:expat",
     "zlib:libz"
   ]
 
