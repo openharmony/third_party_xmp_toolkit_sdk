@@ -22,8 +22,6 @@
     # C++ exception / IO base types referenced by client side
     *XMP_Error*;
     *XMP_IO*;
-    *XMPBuffer_IO*;
-    *XMPFd_IO*;
 
   local:
     *;
