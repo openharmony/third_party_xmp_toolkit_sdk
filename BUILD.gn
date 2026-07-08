@@ -271,7 +271,7 @@ ohos_shared_library("xmpsdk") {
 
   external_deps = [
     "expat:expat",
-    "zlib:libz"
+    "zlib:shared_libz"
   ]
 
   subsystem_name = "thirdparty"
